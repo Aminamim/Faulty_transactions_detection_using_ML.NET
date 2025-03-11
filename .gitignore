@@ -1,5 +1,24 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
+# Visual Studio and .NET build files
+.vs/
+*.vsidx
+*.vsidx.lock
+*.suo
+*.user
+*.cache
+*.pdb
+*.obj
+*.exe
+*.dll
+*.log
+*.tmp
+*.ncb
+*.opendb
+*.VC.db
 
-/.vs/Transaction Anomaly Detection/FileContentIndex/3ab0243f-8806-4de1-8854-3959f813faea.vsidx
+# Build artifacts
+bin/
+obj/
+TestResults/

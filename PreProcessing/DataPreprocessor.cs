@@ -11,13 +11,17 @@ namespace Transaction_Anomaly_Detection.PreProcessing
             // 2. Normalize numerical values (Cost, Quantity, StockOnHand).
             // 3. Concatenate all features into a single "Features" column.
 
-            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding("DescriptionEncoded", "DESCRIPTION")
-                     .Append(mlContext.Transforms.NormalizeMinMax("NormalizedUNITCOST", "UNITCOST"))
-                     .Append(mlContext.Transforms.NormalizeMinMax("NormalizedQUANTITY", "QUANTITY"))
-                     .Append(mlContext.Transforms.NormalizeMinMax("NormalizedSTOCKONHAND", "STOCKONHAND"))
-                     .Append(mlContext.Transforms.NormalizeMinMax("NormalizedRUNNINGUNITCOST", "RUNNINGUNITCOST"))
-                     .Append(mlContext.Transforms.Concatenate("Features", "DescriptionEncoded", "NormalizedUNITCOST", "NormalizedQUANTITY", "NormalizedSTOCKONHAND", "NormalizedRUNNINGUNITCOST"))
-                     .Append(mlContext.Transforms.DropColumns("DESCRIPTION", "UNITCOST", "QUANTITY", "STOCKONHAND", "RUNNINGUNITCOST"));
+
+            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding("DESCRIPTION")
+                           .Append(mlContext.Transforms.Categorical.OneHotEncoding("ITEMNAME"))
+                           .Append(mlContext.Transforms.NormalizeMinMax("UNITCOST"))
+                           .Append(mlContext.Transforms.NormalizeMinMax("QUANTITY"))
+                           .Append(mlContext.Transforms.NormalizeMinMax("STOCKONHAND"))
+                           .Append(mlContext.Transforms.NormalizeMinMax("RUNNINGUNITCOST"))
+                           .Append(mlContext.Transforms.Concatenate("Features", "DESCRIPTION", "ITEMNAME",
+                               "UNITCOST", "QUANTITY", "STOCKONHAND", "RUNNINGUNITCOST"))
+                           .Append(mlContext.BinaryClassification.Trainers.SdcaLogisticRegression(labelColumnName: "Label", featureColumnName: "Features"));
+
 
             // Apply the transformations to the data
             var processedData = pipeline.Fit(dataView).Transform(dataView);

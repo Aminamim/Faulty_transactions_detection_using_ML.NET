@@ -24,11 +24,23 @@ namespace Transaction_Anomaly_Detection.PreProcessing
             [LoadColumn(4)] public float UNITCOST { get; set; }
             [LoadColumn(5)] public float STOCKONHAND { get; set; }
             [LoadColumn(6)] public float RUNNINGUNITCOST { get; set; }
+            [LoadColumn(7), ColumnName("Label")] public bool ISFAULTY { get; set; }
         }
         public class TransactionPrediction
         {
             [ColumnName("PredictedLabel")]
             public bool IsFaulty { get; set; }
+            public float Score { get; set; }
+            public float Probability { get; set; }
+        }
+        public class TransactionDataTransformed
+        {
+            public float[] DESCRIPTION { get; set; }  // Encoded as numerical vectors
+            public float[] ITEMNAME { get; set; }  // Encoded as numerical vectors
+            public float QUANTITY { get; set; }
+            public float UNITCOST { get; set; }
+            public float STOCKONHAND { get; set; }
+            public float RUNNINGUNITCOST { get; set; }
         }
     }
 }

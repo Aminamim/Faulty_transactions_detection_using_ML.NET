@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Transaction_Anomaly_Detection
-build_property.ProjectDir = E:\Files\Transaction Anomaly Detection\
+build_property.ProjectDir = E:\Files\Faulty_transactions_detection_using_ML.NET\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.ML;
+﻿using Microsoft.ML;
 using Transaction_Anomaly_Detection.Models;
 using Transaction_Anomaly_Detection.PreProcessing;
-using static Transaction_Anomaly_Detection.PreProcessing.DataLoader;
 
 class Program
 {
@@ -23,12 +21,18 @@ class Program
 
         Console.WriteLine("Data preprocessing complete.");
 
+
         // Split the data into training and testing sets
         var trainTestData = mlContext.Data.TrainTestSplit(processedData, testFraction: 0.2);
 
         // Explicitly access trainData and testData
         IDataView trainData = trainTestData.TrainSet;
         IDataView testData = trainTestData.TestSet;
+
+        foreach (var column in trainData.Schema)
+        {
+            Console.WriteLine($"{column.Name} - {column.Type}");
+        }
 
         // Train the model
         var model = ModelBuilder.BuildModel(mlContext, trainData);
@@ -42,19 +46,25 @@ class Program
         Console.WriteLine($"AUC: {metrics.AreaUnderRocCurve}");
         Console.WriteLine($"F1 Score: {metrics.F1Score}");
 
-        // Use the model for predictions (example with a single sample)
-        var sample = new TransactionData
-        {
-            DESCRIPTION = "Sample transaction",
-            QUANTITY = 100,
-            UNITCOST = 25.5f,
-            STOCKONHAND = 500,
-            RUNNINGUNITCOST = 20.0f
-        };
+        //var predictionEngine = mlContext.Model.CreatePredictionEngine<TransactionDataTransformed, TransactionPrediction>(model);
 
-        var predictionFunction = mlContext.Model.CreatePredictionEngine<TransactionData, TransactionPrediction>(model);
-        var prediction = predictionFunction.Predict(sample);
+        // Define a sample transaction
+        //var sample = new TransactionData
+        //{
+        //    DATE = "3-Jun-24",
+        //    DESCRIPTION = "Sample transaction",
+        //    ITEMNAME = "Simaju Royal",
+        //    QUANTITY = 100,
+        //    UNITCOST = 25.5f,
+        //    STOCKONHAND = 500,
+        //    RUNNINGUNITCOST = 20.0f
+        //};
 
-        Console.WriteLine($"Predicted Fraud: {prediction.IsFaulty}");
+        //var prediction = predictionEngine.Predict(sample);
+
+        //// Print Prediction
+        //Console.WriteLine($"Predicted IsFaulty: {prediction.IsFaulty}");
+        //Console.WriteLine($"Score: {prediction.Score}");
+        //Console.WriteLine($"Probability: {prediction.Probability}");
     }
 }
