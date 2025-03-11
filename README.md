@@ -1,4 +1,3 @@
-🚀 Overview
 This project implements a fraud detection system using ML.NET. It analyzes business transactions (eg: sales, purchases) to identify potentially fraudulent activities or faulty transactions. The model is trained on structured transaction data and leverages machine learning algorithms for anomaly detection.
 
 🛠 Tech Stack
